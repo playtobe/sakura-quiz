@@ -1534,7 +1534,70 @@ body.light-mode .playlist-item {
   100% { height: 36px; }
 }
 
+/* --- MODAL DIALOGS --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(9, 10, 15, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.25s ease-out;
+}
 
+.modal-card {
+  width: 90%;
+  max-width: 450px;
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 
+/* Edit/Delete icon buttons in tables */
+.btn-edit-row {
+  background: none;
+  border: none;
+  color: var(--sakura-pink);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  transition: var(--transition-smooth);
+}
+
+.btn-edit-row:hover {
+  color: var(--sakura-pink-hover);
+  transform: scale(1.15);
+}
+
+.btn-delete-row {
+  background: none;
+  border: none;
+  color: var(--incorrect);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  transition: var(--transition-smooth);
+}
+
+.btn-delete-row:hover {
+  color: #f87171;
+  transform: scale(1.15);
+}

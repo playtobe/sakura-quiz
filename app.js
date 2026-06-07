@@ -888,6 +888,37 @@ function setupEventListeners() {
   }
   document.getElementById('btn-dash-clear-all').addEventListener('click', clearCustomVocab);
 
+  const addWordBtn = document.getElementById('btn-dash-add-word');
+  if (addWordBtn) addWordBtn.addEventListener('click', () => openVocabModal(''));
+  
+  const closeVocabModalBtn = document.getElementById('btn-close-vocab-modal');
+  if (closeVocabModalBtn) closeVocabModalBtn.addEventListener('click', closeVocabModal);
+  
+  const cancelVocabModalBtn = document.getElementById('btn-cancel-vocab-modal');
+  if (cancelVocabModalBtn) cancelVocabModalBtn.addEventListener('click', closeVocabModal);
+  
+  const saveVocabBtn = document.getElementById('btn-save-vocab');
+  if (saveVocabBtn) saveVocabBtn.addEventListener('click', saveVocab);
+
+  const vocabCategorySelect = document.getElementById('vocab-category-select');
+  if (vocabCategorySelect) {
+    vocabCategorySelect.addEventListener('change', (e) => {
+      if (e.target.value === '__NEW_CAT__') {
+        const inputName = prompt('Nhập tên bài học / nhóm mới:');
+        if (inputName && inputName.trim()) {
+          const newCat = inputName.trim();
+          const newOption = document.createElement('option');
+          newOption.value = newCat;
+          newOption.textContent = newCat;
+          newOption.selected = true;
+          vocabCategorySelect.insertBefore(newOption, vocabCategorySelect.lastElementChild);
+        } else {
+          vocabCategorySelect.value = 'Của tôi';
+        }
+      }
+    });
+  }
+
   // Left Column select all listener
   const leftSelectAllCb = document.getElementById('left-select-all-cb');
   if (leftSelectAllCb) {
@@ -1288,6 +1319,160 @@ function deleteSingleCustomWord(id) {
   }
 }
 
+function openVocabModal(wordId = '') {
+  const modal = document.getElementById('vocab-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const editIdInput = document.getElementById('vocab-edit-id');
+  const wordInput = document.getElementById('vocab-word-input');
+  const readingInput = document.getElementById('vocab-reading-input');
+  const meaningInput = document.getElementById('vocab-meaning-input');
+  const categorySelect = document.getElementById('vocab-category-select');
+  
+  if (!modal || !modalTitle || !editIdInput || !wordInput || !readingInput || !meaningInput || !categorySelect) return;
+  
+  // Populate category dropdown with current unique categories
+  const stored = localStorage.getItem('sakura_quiz_custom_vocab');
+  let customVocab = [];
+  if (stored) {
+    try {
+      customVocab = JSON.parse(stored);
+    } catch(e) {}
+  }
+  const uniqueCategories = [...new Set(customVocab.map(w => w.category))];
+  
+  categorySelect.innerHTML = '';
+  // Default unassigned option
+  const defOpt = document.createElement('option');
+  defOpt.value = 'Của tôi';
+  defOpt.textContent = 'Chưa phân mục (Của tôi)';
+  categorySelect.appendChild(defOpt);
+  
+  uniqueCategories.forEach(cat => {
+    if (cat !== 'Của tôi') {
+      const option = document.createElement('option');
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    }
+  });
+  
+  const newCatOpt = document.createElement('option');
+  newCatOpt.value = '__NEW_CAT__';
+  newCatOpt.textContent = '+ Tạo mục mới...';
+  categorySelect.appendChild(newCatOpt);
+  
+  if (wordId) {
+    // Edit mode
+    modalTitle.textContent = 'Chỉnh sửa từ vựng';
+    editIdInput.value = wordId;
+    
+    const wordObj = customVocab.find(w => w.id === wordId);
+    if (wordObj) {
+      wordInput.value = wordObj.kanji;
+      readingInput.value = wordObj.kana;
+      meaningInput.value = wordObj.vietnamese;
+      categorySelect.value = wordObj.category;
+    }
+  } else {
+    // Add mode
+    modalTitle.textContent = 'Thêm Từ Vựng Mới';
+    editIdInput.value = '';
+    wordInput.value = '';
+    readingInput.value = '';
+    meaningInput.value = '';
+    categorySelect.value = 'Của tôi';
+  }
+  
+  modal.style.display = 'flex';
+}
+
+function closeVocabModal() {
+  const modal = document.getElementById('vocab-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function saveVocab() {
+  const editId = document.getElementById('vocab-edit-id').value;
+  const wordInput = document.getElementById('vocab-word-input').value.trim();
+  const readingInput = document.getElementById('vocab-reading-input').value.trim();
+  const meaningInput = document.getElementById('vocab-meaning-input').value.trim();
+  const categorySelect = document.getElementById('vocab-category-select');
+  
+  if (!wordInput) {
+    alert('Vui lòng nhập từ vựng (Chữ Kanji hoặc Kana).');
+    return;
+  }
+  if (!meaningInput) {
+    alert('Vui lòng nhập nghĩa tiếng Việt.');
+    return;
+  }
+  
+  let targetCategory = categorySelect.value;
+  if (targetCategory === '__NEW_CAT__') {
+    const inputName = prompt('Nhập tên bài học / nhóm mới:');
+    if (inputName && inputName.trim()) {
+      targetCategory = inputName.trim();
+    } else {
+      categorySelect.value = 'Của tôi';
+      targetCategory = 'Của tôi';
+    }
+  }
+  
+  const stored = localStorage.getItem('sakura_quiz_custom_vocab');
+  let customVocab = [];
+  if (stored) {
+    try {
+      customVocab = JSON.parse(stored);
+    } catch(e) {}
+  }
+  
+  if (editId) {
+    // Update existing
+    customVocab = customVocab.map(word => {
+      if (word.id === editId) {
+        return {
+          ...word,
+          kanji: wordInput,
+          kana: readingInput || wordInput,
+          vietnamese: meaningInput,
+          category: targetCategory
+        };
+      }
+      return word;
+    });
+  } else {
+    // Add new
+    const newWord = {
+      id: `custom_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      kanji: wordInput,
+      kana: readingInput || wordInput,
+      romaji: '',
+      vietnamese: meaningInput,
+      example: '',
+      example_meaning: '',
+      level: 'Custom',
+      category: targetCategory
+    };
+    customVocab.push(newWord);
+    
+    // Award points
+    appState.stats.points += 2;
+    saveStats();
+    updateStatsUI();
+  }
+  
+  localStorage.setItem('sakura_quiz_custom_vocab', JSON.stringify(customVocab));
+  
+  // Refresh database & UI
+  updateVocabularySource();
+  renderCategories();
+  checkCustomLevelVisibility();
+  renderCustomVocabList();
+  if (appState.currentScreen === 'manage-custom') renderDashboard();
+  
+  closeVocabModal();
+}
+
 function clearCustomVocab() {
   if (confirm('Bạn có chắc chắn muốn xóa toàn bộ từ vựng đã tự nhập không?')) {
     localStorage.removeItem('sakura_quiz_custom_vocab');
@@ -1454,8 +1639,11 @@ function renderDashboard() {
         <td style="padding: 0.6rem 0.8rem; color: var(--text); font-weight: 500;">
           ${word.vietnamese}
         </td>
-        <td style="padding: 0.6rem 0.8rem; text-align: center;">
-          <button class="delete-single-btn" data-id="${word.id}" title="Xóa từ này" style="margin: 0 auto;">
+        <td style="padding: 0.6rem 0.8rem; text-align: center; display: flex; gap: 0.5rem; justify-content: center; align-items: center;">
+          <button class="btn-edit-row" data-id="${word.id}" title="Sửa từ này">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="btn-delete-row" data-id="${word.id}" title="Xóa từ này">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
           </button>
         </td>
@@ -1467,7 +1655,11 @@ function renderDashboard() {
       
       tr.querySelector('td:nth-child(2)').addEventListener('click', () => speakJapanese(word.kana));
       
-      tr.querySelector('.delete-single-btn').addEventListener('click', (e) => {
+      tr.querySelector('.btn-edit-row').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openVocabModal(word.id);
+      });
+      tr.querySelector('.btn-delete-row').addEventListener('click', (e) => {
         e.stopPropagation();
         deleteSingleCustomWord(word.id);
       });
@@ -1515,8 +1707,11 @@ function renderDashboard() {
             ${optionsHtml}
           </select>
         </td>
-        <td style="padding: 0.6rem 0.8rem; text-align: center;">
-          <button class="delete-single-btn" data-id="${word.id}" title="Xóa từ này" style="margin: 0 auto;">
+        <td style="padding: 0.6rem 0.8rem; text-align: center; display: flex; gap: 0.5rem; justify-content: center; align-items: center;">
+          <button class="btn-edit-row" data-id="${word.id}" title="Sửa từ này">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="btn-delete-row" data-id="${word.id}" title="Xóa từ này">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
           </button>
         </td>
@@ -1534,7 +1729,11 @@ function renderDashboard() {
         changeWordCategory(word.id, e.target.value);
       });
       
-      tr.querySelector('.delete-single-btn').addEventListener('click', (e) => {
+      tr.querySelector('.btn-edit-row').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openVocabModal(word.id);
+      });
+      tr.querySelector('.btn-delete-row').addEventListener('click', (e) => {
         e.stopPropagation();
         deleteSingleCustomWord(word.id);
       });
