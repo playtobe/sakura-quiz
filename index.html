@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JPD123 - Học Từ Vựng Tiếng Nhật</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Cherry Blossom falling particles -->
+  <div class="bg-decorations" id="cherry-blossoms"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <a href="#" class="logo" id="logo-home">
+      <div class="logo-icon">桜</div>
+      <span>JPD123</span>
+    </a>
+    
+    <div class="header-controls">
+      <button class="btn-icon" id="btn-rewards" title="Khu vui chơi & Đổi thưởng">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8V3H7"/><path d="M12 3H17"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+      </button>
+
+      <button class="btn-icon" id="btn-manage-custom" title="Bảng quản lý từ vựng">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+      </button>
+      
+      <button class="btn-icon" id="btn-dictionary" title="Thư viện từ vựng">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/><path d="M6 14h10"/></svg>
+      </button>
+      
+      <button class="btn-icon" id="btn-theme-toggle" title="Đổi chế độ sáng/tối">
+        <!-- Sun icon (will toggle with moon) -->
+        <svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg id="theme-moon" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    
+    <!-- 1. HOME SCREEN (LOBBY) -->
+    <div id="screen-home" class="screen active">
+      <div class="hero-section">
+        <h1 class="hero-title">Học Tiếng Nhật Với <span>JPD123</span></h1>
+        <p class="hero-subtitle">Phương pháp Flashcard lật thông minh và các bài Test trắc nghiệm sinh động</p>
+      </div>
+
+      <!-- Stats overview -->
+      <div class="stats-grid">
+        <div class="glass-card stat-box" data-stat="streak">
+          <span class="stat-val" id="stat-streak">0</span>
+          <span class="stat-lbl">🔥 Streak ngày</span>
+        </div>
+        <div class="glass-card stat-box" data-stat="learned">
+          <span class="stat-val" id="stat-words-learned">0</span>
+          <span class="stat-lbl">📘 Số từ đã thuộc</span>
+        </div>
+        <div class="glass-card stat-box" data-stat="accuracy">
+          <span class="stat-val" id="stat-accuracy">0%</span>
+          <span class="stat-lbl">🎯 Tỷ lệ đúng</span>
+        </div>
+      </div>
+
+      <div class="selectors-container">
+        <!-- Level Selector -->
+        <div>
+          <div class="section-label">1. Chọn Cấp độ JLPT</div>
+          <div class="level-cards">
+            <div class="select-card selected" data-level="ALL">
+              <div class="card-title">Tất cả</div>
+              <div class="card-desc">Học tất cả các từ vựng</div>
+            </div>
+            <div class="select-card" data-level="N5">
+              <div class="card-title">JLPT N5</div>
+              <div class="card-desc">Căn bản nhất</div>
+            </div>
+            <div class="select-card" data-level="N4">
+              <div class="card-title">JLPT N4</div>
+              <div class="card-desc">Sơ trung cấp</div>
+            </div>
+            <div class="select-card" data-level="N3">
+              <div class="card-title">JLPT N3</div>
+              <div class="card-desc">Trung cấp</div>
+            </div>
+            <div class="select-card" data-level="Custom" id="card-level-custom" style="display: none;">
+              <div class="card-title">Tự chọn</div>
+              <div class="card-desc">Từ đã nhập</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thematic Category Selector -->
+        <div>
+          <div class="section-label">2. Chọn Chủ đề từ vựng</div>
+          <div class="category-cards" id="category-list">
+            <!-- Will be dynamically generated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="action-bar">
+        <button class="btn btn-secondary" id="btn-start-flashcard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v20"/><path d="M14 6h4"/><path d="M14 10h4"/><path d="M14 14h4"/></svg>
+          Học Flashcards
+        </button>
+        <button class="btn btn-primary" id="btn-start-quiz">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Làm Quiz Trắc Nghiệm
+        </button>
+      </div>
+
+      <!-- Import Custom Vocabulary Card -->
+      <div class="glass-card" style="margin-top: 2.5rem; border-color: rgba(255, 117, 151, 0.15);">
+        <div class="section-label" style="border-left-color: var(--sakura-pink); margin-bottom: 0.5rem;">Import Từ Vựng Tự Chọn</div>
+        
+        <!-- Category name input -->
+        <div style="margin-bottom: 1rem; width: 100%;">
+          <label for="import-category-input" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--text);">Tên bài học / Nhóm từ vựng:</label>
+          <input type="text" id="import-category-input" class="search-input" placeholder="Ví dụ: Bài 1, Từ vựng N5, Động từ..." style="padding-left: 1rem; width: 100%;">
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; margin-top: 0; line-height: 1.4;">
+          Nhập từ vựng của bạn theo định dạng <strong>hiragana/katakana: nghĩa tiếng việt</strong> (Mỗi từ 1 dòng). Ví dụ:<br>
+          <code>こんにちは: Xin chào</code><br>
+          <code>ありがとう: Cảm ơn</code>
+        </p>
+        <textarea id="import-textarea" rows="4" style="width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem; color: var(--text); font-family: var(--font-latin); font-size: 0.9rem; box-sizing: border-box; resize: vertical;" placeholder="Nhập từ vựng tại đây...&#10;こんにちは: Xin chào&#10;ありがとう: Cảm ơn"></textarea>
+        
+        <div class="action-bar" style="justify-content: flex-end; margin-top: 0.75rem; gap: 0.75rem;">
+          <button class="btn btn-secondary" id="btn-clear-custom" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Xóa từ tự chọn</button>
+          <button class="btn btn-primary" id="btn-import-custom" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Import Từ Vựng</button>
+        </div>
+        <div id="import-status" style="font-size: 0.85rem; margin-top: 0.5rem; display: none; font-weight: 600;"></div>
+
+        <!-- Custom vocabulary list display -->
+        <div id="custom-vocab-list-wrapper" style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; display: none;">
+          <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Danh sách từ vựng đã nhập (<span id="custom-vocab-count">0</span>)</span>
+          </div>
+          <div id="custom-vocab-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto; padding-right: 0.25rem;">
+            <!-- Custom items will be generated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. FLASHCARD SCREEN -->
+    <div id="screen-flashcard" class="screen">
+      <div class="back-nav" id="fc-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Quay lại trang chủ
+      </div>
+      
+      <!-- 3D Flipping Flashcard Wrapper -->
+      <div class="flashcard-wrapper">
+        <div class="flashcard" id="active-flashcard">
+          <!-- FRONT FACE (Japanese word) -->
+          <div class="card-face card-front">
+            <div class="card-meta">
+              <span class="badge" id="fc-badge-level">N5</span>
+              <span id="fc-badge-cat">Gia đình</span>
+            </div>
+            
+            <div class="card-center">
+              <h2 class="jp-word" id="fc-kanji">日本語</h2>
+              <p class="jp-reading" id="fc-kana">にほんご</p>
+              <p class="jp-romaji" id="fc-romaji">nihongo</p>
+            </div>
+            
+            <div class="card-footer-tip">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Nhấn thẻ hoặc <span class="kb-badge">Space</span> để lật xem nghĩa
+            </div>
+          </div>
+
+          <!-- BACK FACE (Vietnamese translation + Example) -->
+          <div class="card-face card-back">
+            <div class="card-meta">
+              <span class="badge" id="fc-back-level">N5</span>
+              <button class="speak-btn" id="btn-speak-fc" title="Phát âm tiếng Nhật">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              </button>
+            </div>
+            
+            <div class="card-center">
+              <h3 class="word-meaning" id="fc-meaning">Tiếng Nhật</h3>
+              
+              <!-- Sentence Example -->
+              <div class="sentence-example" id="fc-example-box">
+                <p class="example-jp" id="fc-example-jp">日本語を勉強しています。</p>
+                <p class="example-vn" id="fc-example-vn">Tôi đang học tiếng Nhật.</p>
+              </div>
+            </div>
+            
+            <div class="card-footer-tip">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Nhấn để lật lại mặt trước
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls below card -->
+      <div class="study-controls">
+        <button class="btn btn-secondary btn-icon" id="btn-fc-prev" title="Từ trước đó">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        
+        <div class="progress-counter">
+          <span id="fc-current-idx">1</span>/<span id="fc-total-count">10</span>
+        </div>
+        
+        <button class="btn btn-secondary btn-icon" id="btn-fc-next" title="Từ tiếp theo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="action-bar" style="margin-top: 1rem;">
+        <button class="btn btn-primary" id="btn-fc-mastered">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Đã thuộc từ này
+        </button>
+      </div>
+
+      <!-- Keyboard shortcuts instructions -->
+      <div class="keyboard-hints">
+        <span><kbd class="kb-badge">←</kbd> Từ trước</span>
+        <span><kbd class="kb-badge">Space</kbd> Lật thẻ</span>
+        <span><kbd class="kb-badge">→</kbd> Từ tiếp theo</span>
+        <span><kbd class="kb-badge">Enter</kbd> Đã thuộc</span>
+      </div>
+    </div>
+
+    <!-- 3. QUIZ SCREEN -->
+    <div id="screen-quiz" class="screen">
+      <div class="back-nav" id="quiz-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Thoát Quiz
+      </div>
+
+      <!-- Progress bar -->
+      <div class="quiz-header">
+        <div class="quiz-meta">
+          <span id="quiz-progress-text">Câu hỏi 1/10</span>
+          <span class="quiz-score-live">Đúng: <span id="quiz-live-correct">0</span>/<span id="quiz-live-total">0</span></span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-fill" id="quiz-progress-bar"></div>
+        </div>
+      </div>
+
+      <!-- Question display -->
+      <div class="glass-card question-card">
+        <span class="question-hint" id="quiz-q-hint">Chọn nghĩa tiếng Việt đúng</span>
+        <h2 class="question-text" id="quiz-q-text">日本語</h2>
+        <span class="question-reading-hint" id="quiz-q-reading-hint"></span>
+        
+        <!-- Speak question button (useful for audio practice) -->
+        <button class="speak-btn" style="margin-top: 0.75rem;" id="btn-speak-q" title="Nghe phát âm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+      </div>
+
+      <!-- Multiple choices grid (4 answers) -->
+      <div class="choices-grid" id="quiz-choices">
+        <button class="choice-btn" data-idx="0">
+          <span class="choice-text">Lựa chọn 1</span>
+          <span class="choice-shortcut">1</span>
+        </button>
+        <button class="choice-btn" data-idx="1">
+          <span class="choice-text">Lựa chọn 2</span>
+          <span class="choice-shortcut">2</span>
+        </button>
+        <button class="choice-btn" data-idx="2">
+          <span class="choice-text">Lựa chọn 3</span>
+          <span class="choice-shortcut">3</span>
+        </button>
+        <button class="choice-btn" data-idx="3">
+          <span class="choice-text">Lựa chọn 4</span>
+          <span class="choice-shortcut">4</span>
+        </button>
+      </div>
+
+      <!-- Next action / verification feedback -->
+      <div class="quiz-footer">
+        <button class="btn btn-primary" id="btn-quiz-next" style="display: none;">
+          Tiếp theo
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <!-- Keyboard shortcuts instructions -->
+      <div class="keyboard-hints">
+        <span>Chọn đáp án: <kbd class="kb-badge">1</kbd>, <kbd class="kb-badge">2</kbd>, <kbd class="kb-badge">3</kbd>, <kbd class="kb-badge">4</kbd></span>
+        <span>Từ tiếp theo: <kbd class="kb-badge">Enter</kbd> hoặc <kbd class="kb-badge">Space</kbd></span>
+      </div>
+    </div>
+
+    <!-- 4. RESULT SCREEN -->
+    <div id="screen-result" class="screen">
+      <div class="glass-card result-card">
+        <div class="badge-rank" id="result-rank">S</div>
+        <h2 class="result-title" id="result-title">Hoàn thành xuất sắc!</h2>
+        <p class="result-desc" id="result-message">Bạn đã làm chủ bài kiểm tra hôm nay. Hãy duy trì phong độ nhé!</p>
+        
+        <div class="summary-stats">
+          <div>
+            <div class="summary-stat-val" id="res-total-qs">10</div>
+            <div class="summary-stat-lbl">Số câu hỏi</div>
+          </div>
+          <div>
+            <div class="summary-stat-val" style="color: var(--correct);" id="res-corrects">9</div>
+            <div class="summary-stat-lbl">Đáp án đúng</div>
+          </div>
+          <div>
+            <div class="summary-stat-val" style="color: var(--sakura-pink);" id="res-accuracy">90%</div>
+            <div class="summary-stat-lbl">Độ chính xác</div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-secondary" id="btn-res-home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Về Trang chủ
+          </button>
+          <button class="btn btn-primary" id="btn-res-retry">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Làm lại Quiz
+          </button>
+        </div>
+      </div>
+
+      <!-- Incorrect questions review panel (only shown if there are errors) -->
+      <div class="review-section" id="res-review-container" style="display: none;">
+        <div class="section-label">Danh sách câu trả lời sai cần ôn tập</div>
+        <div class="review-list" id="res-review-list">
+          <!-- Will be generated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. DICTIONARY/VOCABULARY SCREEN -->
+    <div id="screen-dictionary" class="screen">
+      <div class="back-nav" id="dict-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Quay lại trang chủ
+      </div>
+
+      <div class="hero-section" style="margin-bottom: 1.5rem;">
+        <h2 class="hero-title" style="font-size: 2rem;">Thư Viện <span>Từ Vựng</span></h2>
+        <p class="hero-subtitle">Tra cứu cách đọc, cấp độ và nghĩa của tất cả từ vựng trong ứng dụng</p>
+      </div>
+
+      <div class="dict-toolbar">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="dict-search" class="search-input" placeholder="Tìm kiếm bằng Hán tự, Hiragana hoặc Nghĩa tiếng Việt...">
+        </div>
+        
+        <div class="dict-filters">
+          <button class="filter-btn active" data-filter="ALL">Tất cả</button>
+          <button class="filter-btn" data-filter="N5">N5</button>
+          <button class="filter-btn" data-filter="N4">N4</button>
+          <button class="filter-btn" data-filter="N3">N3</button>
+          <button class="filter-btn" data-filter="Custom" id="dict-filter-custom" style="display: none;">Tự chọn</button>
+        </div>
+      </div>
+
+      <div class="dict-grid" id="dict-list">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+
+    <!-- 6. CUSTOM VOCABULARY DASHBOARD SCREEN -->
+    <div id="screen-manage-custom" class="screen">
+      <div class="back-nav" id="manage-custom-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Quay lại trang chủ
+      </div>
+
+      <div class="hero-section" style="margin-bottom: 1.5rem;">
+        <h2 class="hero-title" style="font-size: 2rem;">Bảng Quản Lý <span>Từ Vựng</span></h2>
+        <p class="hero-subtitle">Phân loại từ vựng tự nhập vào các mục bài học dễ dàng và nhanh chóng</p>
+      </div>
+
+      <!-- Stats / Actions -->
+      <div class="glass-card" style="padding: 1.25rem 2rem; display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            Tổng từ vựng tự nhập: <strong id="dash-total-words" style="color: var(--sakura-pink); font-size: 1.1rem;">0</strong> | 
+            Số bài học: <strong id="dash-total-categories" style="color: var(--sakura-pink); font-size: 1.1rem;">0</strong>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary" id="btn-dash-clear-all" style="font-size: 0.8rem; padding: 0.5rem 1rem; border-color: var(--incorrect); color: var(--incorrect);">
+              Xóa tất cả từ tự nhập
+            </button>
+          </div>
+        </div>
+        
+        <!-- Filters inside Dashboard (filters both lists) -->
+        <div class="dict-toolbar" style="margin-bottom: 0; display: flex; flex-direction: row; gap: 1rem; width: 100%;">
+          <div class="search-wrapper" style="flex: 1;">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="dash-search" class="search-input" placeholder="Tìm kiếm từ vựng (Nhật hoặc Việt)...">
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO-COLUMN LAYOUT -->
+      <div class="dash-split-container">
+        
+        <!-- LEFT COLUMN: UNASSIGNED (Chưa chọn vào mục) -->
+        <div class="glass-card dash-column">
+          <div class="dash-column-header">
+            <span class="dash-column-title">Chưa phân mục (Mặc định)</span>
+            <span class="dash-column-count" id="dash-left-count">0</span>
+          </div>
+
+          <!-- Left Bulk Action Bar -->
+          <div class="dash-column-actions">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" id="left-select-all-cb" style="cursor: pointer; transform: scale(1.15);">
+              <span id="btn-left-select-all" style="cursor: pointer; font-size: 0.85rem; font-weight: 600; user-select: none;">Chọn tất cả</span>
+            </div>
+            
+            <div id="left-bulk-bar" style="display: none; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Chuyển sang:</span>
+              <select id="left-bulk-move-select" class="category-select" style="font-size: 0.75rem; padding: 2px 4px; min-width: 110px;"></select>
+              <button id="btn-left-bulk-move" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem; height: auto;">Áp dụng</button>
+              <button id="btn-left-bulk-delete" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem; height: auto; color: var(--incorrect); border-color: var(--incorrect); background: transparent;">Xóa</button>
+            </div>
+          </div>
+
+          <!-- Left Table -->
+          <div class="dash-table-wrapper">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                  <th style="padding: 0.6rem 0.8rem; width: 35px; text-align: center;"></th>
+                  <th style="padding: 0.6rem 0.8rem;">Từ vựng (Tiếng Nhật)</th>
+                  <th style="padding: 0.6rem 0.8rem;">Nghĩa (Tiếng Việt)</th>
+                  <th style="padding: 0.6rem 0.8rem; text-align: center; width: 60px;">Xóa</th>
+                </tr>
+              </thead>
+              <tbody id="left-table-body" style="font-size: 0.9rem;">
+                <!-- Left table rows go here -->
+              </tbody>
+            </table>
+            <div id="left-empty-state" class="empty-state" style="display: none; padding: 2rem; font-size: 0.85rem;">
+              Không có từ vựng nào chưa phân mục.
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: ASSIGNED (Đã phân mục) -->
+        <div class="glass-card dash-column">
+          <div class="dash-column-header" style="flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="dash-column-title">Đã phân mục bài học</span>
+              <span class="dash-column-count" id="dash-right-count">0</span>
+            </div>
+            
+            <!-- Category Filter for Right Side -->
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <label for="right-filter-category" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); white-space: nowrap;">Lọc mục:</label>
+              <select id="right-filter-category" class="category-select" style="padding: 3px 6px; font-size: 0.75rem; min-width: 110px;">
+                <option value="ALL">Tất cả mục</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Right Bulk Action Bar -->
+          <div class="dash-column-actions">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" id="right-select-all-cb" style="cursor: pointer; transform: scale(1.15);">
+              <span id="btn-right-select-all" style="cursor: pointer; font-size: 0.85rem; font-weight: 600; user-select: none;">Chọn tất cả</span>
+            </div>
+            
+            <div id="right-bulk-bar" style="display: none; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Chuyển mục:</span>
+              <select id="right-bulk-move-select" class="category-select" style="font-size: 0.75rem; padding: 2px 4px; min-width: 110px;"></select>
+              <button id="btn-right-bulk-move" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem; height: auto;">Áp dụng</button>
+              <button id="btn-right-bulk-delete" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem; height: auto; color: var(--incorrect); border-color: var(--incorrect); background: transparent;">Xóa</button>
+            </div>
+          </div>
+
+          <!-- Right Table -->
+          <div class="dash-table-wrapper">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                  <th style="padding: 0.6rem 0.8rem; width: 35px; text-align: center;"></th>
+                  <th style="padding: 0.6rem 0.8rem;">Từ vựng (Tiếng Nhật)</th>
+                  <th style="padding: 0.6rem 0.8rem;">Nghĩa (Tiếng Việt)</th>
+                  <th style="padding: 0.6rem 0.8rem; width: 130px;">Bài học hiện tại</th>
+                  <th style="padding: 0.6rem 0.8rem; text-align: center; width: 50px;">Xóa</th>
+                </tr>
+              </thead>
+              <tbody id="right-table-body" style="font-size: 0.9rem;">
+                <!-- Right table rows go here -->
+              </tbody>
+            </table>
+            <div id="right-empty-state" class="empty-state" style="display: none; padding: 2rem; font-size: 0.85rem;">
+              Không có từ vựng nào đã phân mục.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    </div>
+
+    <!-- 7. REWARDS & ENTERTAINMENT SCREEN -->
+    <div id="screen-rewards" class="screen">
+      <div class="back-nav" id="rewards-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Quay lại trang chủ
+      </div>
+
+      <div class="hero-section" style="margin-bottom: 1.5rem;">
+        <h2 class="hero-title" style="font-size: 2rem;">Khu Vui Chơi <span>& Đổi Thưởng</span></h2>
+        <p class="hero-subtitle">Tích lũy điểm khi học từ vựng để quay thưởng, nghe nhạc lo-fi và chơi game giải trí</p>
+      </div>
+
+      <!-- Point stats panel -->
+      <div class="glass-card" style="padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-color: rgba(255, 117, 151, 0.25);">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span style="font-size: 1.75rem;">🪙</span>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Điểm thưởng tích lũy</div>
+            <div>
+              <strong id="rewards-points-balance" style="color: var(--sakura-pink); font-size: 1.6rem;">100</strong> <span style="font-weight: 700; font-size: 1.1rem; color: var(--text-muted);">xu</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; max-width: 350px;">
+          Làm đúng bài trắc nghiệm trắc nghiệm để nhận thêm điểm. Sử dụng điểm tích lũy để đổi quà ảo hoặc chơi game!
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="dict-toolbar" style="margin-top: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: center;">
+        <div class="dict-filters" id="rewards-tabs" style="display: flex; gap: 0.5rem; justify-content: center; width: auto; margin: 0 auto;">
+          <button class="filter-btn active" data-tab="wheel">🎡 Vòng quay</button>
+          <button class="filter-btn" data-tab="game">🎮 Hứng hoa</button>
+          <button class="filter-btn" data-tab="shop">🏪 Cửa hàng</button>
+          <button class="filter-btn" data-tab="music">🎵 Nghe nhạc</button>
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: LUCKY WHEEL -->
+      <div id="tab-content-wheel" class="rewards-tab-panel active">
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 1.5rem;">
+          
+          <!-- Lucky Wheel Section -->
+          <div style="position: relative; width: 320px; height: 320px; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
+            <div class="wheel-pointer"></div>
+            <div class="lucky-wheel-container" id="lucky-wheel">
+              <canvas id="wheel-canvas" width="300" height="300"></canvas>
+            </div>
+            <button class="wheel-spin-btn" id="btn-spin-wheel">QUAY<br><span style="font-size: 0.65rem; font-weight: 500;">-50 xu</span></button>
+          </div>
+
+          <!-- Wheel Info / Logs -->
+          <div class="glass-card" style="flex: 1; min-width: 300px; padding: 1.5rem; align-self: stretch; display: flex; flex-direction: column;">
+            <h3 style="margin-top: 0; color: var(--sakura-pink); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; font-size: 1.15rem;">Cung Giải Thưởng</h3>
+            <ul style="padding-left: 1.25rem; font-size: 0.85rem; line-height: 1.7; color: var(--text); margin-bottom: 1.5rem;">
+              <li>🎉 <strong style="color: var(--sakura-pink);">Nhận +100 xu</strong> (Thêm điểm)</li>
+              <li>🎫 <strong style="color: var(--sakura-pink);">Lượt chơi game miễn phí</strong></li>
+              <li>🍵 <strong style="color: var(--sakura-pink);">Trà sữa trân châu</strong> (Tủ đồ ăn)</li>
+              <li>🌟 <strong style="color: var(--text-muted);">May mắn lần sau</strong> (Mất lượt)</li>
+              <li>🎉 <strong style="color: var(--sakura-pink);">Nhận +50 xu</strong> (Hòa vốn)</li>
+              <li>🍡 <strong style="color: var(--sakura-pink);">Bánh tráng trộn</strong> (Tủ đồ ăn)</li>
+              <li>🎉 <strong style="color: var(--sakura-pink);">Nhận +20 xu</strong> (Bù xu)</li>
+              <li>🍜 <strong style="color: var(--sakura-pink);">Mì Ramen Nhật</strong> (Hàng độc quyền)</li>
+            </ul>
+            <div id="wheel-result-msg" style="margin-top: auto; padding: 0.75rem; border-radius: 10px; font-weight: 700; text-align: center; font-size: 0.95rem; border: 1px solid transparent;">
+              Bấm nút QUAY để thử vận may!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: SAKURA CATCHER MINI-GAME -->
+      <div id="tab-content-game" class="rewards-tab-panel">
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 1rem;">
+          
+          <!-- Canvas Container -->
+          <div class="glass-card" style="padding: 0.75rem; position: relative; width: 376px; box-sizing: border-box; margin: 0 auto;">
+            <canvas id="game-canvas" width="360" height="420" style="background: rgba(0, 0, 0, 0.45); border-radius: 8px; display: block; border: 1px solid var(--border);"></canvas>
+            
+            <!-- Start Game overlay -->
+            <div id="game-start-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 14, 21, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; gap: 1rem; color: #fff; padding: 1.5rem; text-align: center; box-sizing: border-box;">
+              <h3 style="margin: 0; color: var(--sakura-pink); font-size: 1.5rem;">Hứng Hoa Anh Đào</h3>
+              <p style="font-size: 0.85rem; margin: 0; line-height: 1.5; color: #d1d5db;">
+                Di chuyển chiếc giỏ (di chuột hoặc kéo trên điện thoại) để hứng cánh hoa rơi:<br>
+                🌸 <strong>Cánh hoa hồng:</strong> +1 điểm<br>
+                ✨ <strong>Cánh hoa vàng:</strong> +5 điểm<br>
+                🐛 <strong>Sâu róm hại cây:</strong> Né tránh! Chạm phải mất 1 mạng.<br>
+                Bạn có 3 mạng và 60 giây. Cần <strong>20 xu</strong> mỗi lượt chơi.
+              </p>
+              <button class="btn btn-primary" id="btn-start-game" style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">Bắt đầu (-20 xu)</button>
+            </div>
+          </div>
+
+          <!-- Game stats panel -->
+          <div class="glass-card" style="flex: 1; min-width: 280px; padding: 1.5rem; align-self: stretch; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h3 style="margin-top: 0; color: var(--sakura-pink); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; font-size: 1.15rem;">Bảng Trạng Thái</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+                  <span>Điểm hứng được:</span>
+                  <strong id="game-score-val" style="color: var(--sakura-pink); font-size: 1.1rem;">0</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+                  <span>Mạng sống:</span>
+                  <strong id="game-lives-val" style="color: var(--incorrect); font-size: 1.1rem;">❤️❤️❤️</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+                  <span>Thời gian:</span>
+                  <strong id="game-timer-val" style="color: var(--correct); font-size: 1.1rem;">60s</strong>
+                </div>
+              </div>
+            </div>
+            
+            <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">
+              📌 <strong>Quy tắc quy đổi:</strong> Cứ hứng được <strong>5 điểm game</strong> bạn sẽ đổi được <strong>1 xu thưởng tích lũy</strong> ngay sau khi kết thúc. Hãy cố gắng hết sức nhé!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: SIMULATED FOOD SHOP -->
+      <div id="tab-content-shop" class="rewards-tab-panel">
+        <div style="margin-top: 1rem;">
+          <h3 style="color: var(--sakura-pink); margin-top: 0; font-size: 1.15rem;">🏪 Tiệm Ăn Vặt Nhật Bản</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Dùng xu thưởng tích lũy mua đồ ăn vặt ảo cực kỳ thơm ngon và sưu tập chúng vào tủ đồ cá nhân!</p>
+          
+          <!-- Shop Items Grid -->
+          <div class="shop-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            
+            <!-- Bubble Tea -->
+            <div class="glass-card shop-item" data-id="bubble_tea" data-price="80" style="display: flex; flex-direction: column; align-items: center; padding: 1rem; text-align: center; transition: var(--transition-smooth); border-radius: 12px;">
+              <span style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block;">🍵</span>
+              <h4 style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text);">Trà sữa trân châu</h4>
+              <div style="color: var(--sakura-pink); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">80 xu</div>
+              <button class="btn btn-primary btn-shop-buy" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%; border-radius: 8px;">Mua đổi quà</button>
+            </div>
+
+            <!-- Rice Paper -->
+            <div class="glass-card shop-item" data-id="rice_paper" data-price="50" style="display: flex; flex-direction: column; align-items: center; padding: 1rem; text-align: center; transition: var(--transition-smooth); border-radius: 12px;">
+              <span style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block;">🍡</span>
+              <h4 style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text);">Bánh tráng trộn</h4>
+              <div style="color: var(--sakura-pink); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">50 xu</div>
+              <button class="btn btn-primary btn-shop-buy" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%; border-radius: 8px;">Mua đổi quà</button>
+            </div>
+
+            <!-- Takoyaki -->
+            <div class="glass-card shop-item" data-id="takoyaki" data-price="100" style="display: flex; flex-direction: column; align-items: center; padding: 1rem; text-align: center; transition: var(--transition-smooth); border-radius: 12px;">
+              <span style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block;">🐙</span>
+              <h4 style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text);">Bánh Takoyaki</h4>
+              <div style="color: var(--sakura-pink); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">100 xu</div>
+              <button class="btn btn-primary btn-shop-buy" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%; border-radius: 8px;">Mua đổi quà</button>
+            </div>
+
+            <!-- Ramen -->
+            <div class="glass-card shop-item" data-id="ramen" data-price="150" style="display: flex; flex-direction: column; align-items: center; padding: 1rem; text-align: center; transition: var(--transition-smooth); border-radius: 12px;">
+              <span style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block;">🍜</span>
+              <h4 style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text);">Mì Ramen nóng</h4>
+              <div style="color: var(--sakura-pink); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">150 xu</div>
+              <button class="btn btn-primary btn-shop-buy" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%; border-radius: 8px;">Mua đổi quà</button>
+            </div>
+
+            <!-- Ice Cream -->
+            <div class="glass-card shop-item" data-id="ice_cream" data-price="60" style="display: flex; flex-direction: column; align-items: center; padding: 1rem; text-align: center; transition: var(--transition-smooth); border-radius: 12px;">
+              <span style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block;">🍦</span>
+              <h4 style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text);">Kem Sakura mát</h4>
+              <div style="color: var(--sakura-pink); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">60 xu</div>
+              <button class="btn btn-primary btn-shop-buy" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%; border-radius: 8px;">Mua đổi quà</button>
+            </div>
+          </div>
+
+          <!-- Inventory Cabinet -->
+          <div class="glass-card" style="padding: 1.5rem; margin-top: 1.5rem;">
+            <h3 style="margin-top: 0; color: var(--sakura-pink); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 1.15rem;">
+              <span>🗄️ Tủ Trữ Đồ Ăn Cá Nhân</span>
+            </h3>
+            <div id="cabinet-items-container" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+              <!-- Dynamic inventory items will go here -->
+            </div>
+            <div id="cabinet-empty-state" class="empty-state" style="padding: 1.5rem; font-size: 0.85rem; display: block;">
+              Tủ đồ ăn của bạn hiện đang trống. Hãy quay thưởng hoặc mua sắm để tích trữ nhé!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: AUDIO PLAYER MUSIC STATION -->
+      <div id="tab-content-music" class="rewards-tab-panel">
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 1.5rem;">
+          
+          <!-- Lofi Music Player Card -->
+          <div class="glass-card music-player-card" style="width: 300px; padding: 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; border-radius: 16px; margin: 0 auto;">
+            
+            <!-- Vinyl Disc -->
+            <div class="vinyl-disc-container" id="music-vinyl">
+              <div class="vinyl-disc">
+                <div class="vinyl-center"></div>
+              </div>
+            </div>
+
+            <!-- Song Info -->
+            <div style="margin-top: 1.5rem; width: 100%;">
+              <h4 id="music-track-title" style="margin: 0; font-size: 1.05rem; color: var(--text); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sakura Chill Lofi</h4>
+              <p id="music-track-artist" style="margin: 3px 0 0 0; font-size: 0.8rem; color: var(--text-muted);">J-LoFi Station</p>
+            </div>
+
+            <!-- Equalizer bar graphics -->
+            <div class="equalizer-container" id="music-equalizer">
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+            </div>
+
+            <!-- Player Controls -->
+            <div style="display: flex; align-items: center; gap: 1.25rem; margin-top: 1.25rem;">
+              <button class="btn-icon" id="btn-music-prev" title="Bài trước" style="padding: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+              </button>
+              
+              <button class="btn btn-primary btn-icon" id="btn-music-play-pause" title="Phát / Dừng" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0; background: var(--sakura-pink); border: none;">
+                <svg id="music-play-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 2px; color: #fff;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg id="music-pause-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; color: #fff;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              </button>
+              
+              <button class="btn-icon" id="btn-music-next" title="Bài tiếp theo" style="padding: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+              </button>
+            </div>
+
+            <!-- Volume bar -->
+            <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-top: 1.25rem;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">🔈</span>
+              <input type="range" id="music-volume" min="0" max="1" step="0.05" value="0.5" style="flex: 1; height: 4px; border-radius: 2px; background: var(--border); outline: none; cursor: pointer; accent-color: var(--sakura-pink);">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">🔊</span>
+            </div>
+            
+            <!-- YouTube Player Wrapper -->
+            <div id="yt-player-wrapper" style="display: none; width: 100%; margin-top: 1rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16/9;">
+              <div id="yt-player"></div>
+            </div>
+
+            <!-- Hidden Audio Element -->
+            <audio id="rewards-audio" style="display: none;"></audio>
+          </div>
+
+          <!-- Playlist / Info panel -->
+          <div class="glass-card" style="flex: 1; min-width: 280px; padding: 1.5rem; align-self: stretch; display: flex; flex-direction: column; gap: 1rem;">
+            <h3 style="margin-top: 0; color: var(--sakura-pink); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; font-size: 1.15rem;">🎧 Album Nhạc Lo-Fi</h3>
+            <div id="playlist-container" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 220px; overflow-y: auto; padding-right: 0.25rem;">
+              <!-- Playlist items go here -->
+            </div>
+            
+            <!-- Custom music tools -->
+            <div style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.5rem;">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--sakura-pink); margin-bottom: 0.2rem;">➕ Thêm Nhạc Của Bạn</div>
+              
+              <!-- File Upload -->
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="btn btn-secondary" id="btn-music-upload-trigger" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: 100%; height: auto;">
+                  📂 Chọn tệp nhạc (.mp3) từ máy
+                </button>
+                <input type="file" id="music-file-input" accept="audio/*" multiple style="display: none;">
+              </div>
+              
+              <!-- Link Import -->
+              <div style="display: flex; gap: 0.35rem; width: 100%;">
+                <input type="text" id="music-url-input" class="search-input" placeholder="Dán link nhạc MP3 hoặc YouTube..." style="font-size: 0.75rem; padding: 0.35rem 0.5rem; flex: 1; height: auto;">
+                <button class="btn btn-primary" id="btn-add-music-url" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: auto; height: auto;">Thêm link</button>
+              </div>
+
+              <!-- Discord Bot Search -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem; width: 100%; margin-top: 0.25rem; border-top: 1px dashed var(--border); padding-top: 0.5rem;">
+                <div style="font-size: 0.8rem; font-weight: 600; color: var(--sakura-pink);">🔍 Tìm nhạc YouTube (như Discord Bot):</div>
+                <div style="display: flex; gap: 0.35rem; width: 100%;">
+                  <input type="text" id="music-search-input" class="search-input" placeholder="Nhập tên bài hát... (Ví dụ: Lofi Nhật Bản)" style="font-size: 0.75rem; padding: 0.35rem 0.5rem; flex: 1; height: auto;">
+                  <button class="btn btn-primary" id="btn-search-music" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; width: auto; height: auto;">Tìm</button>
+                </div>
+                <!-- Search results container -->
+                <div id="music-search-results" style="display: none; flex-direction: column; gap: 0.35rem; max-height: 120px; overflow-y: auto; background: rgba(0, 0, 0, 0.45); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; font-size: 0.75rem; margin-top: 0.25rem;">
+                  <!-- Results will go here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 JPD123. Được thiết kế cho việc học ngoại ngữ hiệu quả.</p>
+  </footer>
+
+  <!-- App Data and Scripts -->
+  <script src="vocabulary.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
