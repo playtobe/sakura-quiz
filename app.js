@@ -108,6 +108,14 @@ function initStats() {
       console.error('Error parsing stats, resetting...', e);
     }
   }
+  
+  // Force reset points to 0 exactly once as requested by the user
+  if (localStorage.getItem('sakura_points_reset_v3') !== 'true') {
+    appState.stats.points = 0;
+    saveStats();
+    localStorage.setItem('sakura_points_reset_v3', 'true');
+  }
+
   updateStreak();
 }
 
@@ -435,8 +443,8 @@ function startQuiz(wordsList = null) {
     return;
   }
   
-  // Select up to 10 questions randomly
-  appState.quizWords = shuffleArray([...sourceWords]).slice(0, 10);
+  // Use all vocabulary words matching the filter
+  appState.quizWords = shuffleArray([...sourceWords]);
   appState.quizQuestions = appState.quizWords.map(word => generateQuestion(word));
   appState.currentQuestionIndex = 0;
   appState.quizCorrectAnswers = 0;
@@ -610,7 +618,6 @@ function checkQuizAnswer(selectedIdx) {
     // Correct!
     appState.quizCorrectAnswers += 1;
     appState.stats.totalCorrectAnswers += 1;
-    appState.stats.points += 10; // Award 10 points
     choiceButtons[selectedIdx].classList.add('correct');
   } else {
     // Incorrect!
@@ -649,17 +656,8 @@ function showQuizResults() {
   const correct = appState.quizCorrectAnswers;
   const accuracy = Math.round((correct / total) * 100);
   
-  // Award completion and rank points
-  let earnedPoints = 0;
-  if (accuracy >= 60) {
-    earnedPoints += 30; // Passed quiz reward
-  }
-  if (accuracy === 100) {
-    earnedPoints += 50; // Perfect S-rank reward
-  }
-  if (earnedPoints > 0) {
-    appState.stats.points += earnedPoints;
-  }
+  // Award completion points as requested: exactly +50 points per test completed
+  appState.stats.points += 50;
   saveStats();
   updateStatsUI();
   
