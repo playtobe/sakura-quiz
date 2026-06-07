@@ -554,6 +554,16 @@ function renderQuizQuestion() {
   document.getElementById('quiz-q-hint').textContent = q.hint;
   document.getElementById('quiz-q-reading-hint').textContent = q.readingHint;
   
+  // Update level and category badges
+  const levelBadge = document.getElementById('quiz-badge-level');
+  const catBadge = document.getElementById('quiz-badge-cat');
+  if (levelBadge) {
+    levelBadge.textContent = q.word.level || 'Custom';
+  }
+  if (catBadge) {
+    catBadge.textContent = `Chủ đề: ${q.word.category || 'Chưa phân mục'}`;
+  }
+  
   // Speak word if Japanese is the question prompt
   if (q.type === 0 || q.type === 2) {
     speakJapanese(q.text);
@@ -1067,16 +1077,32 @@ function handleImportVocab() {
     return;
   }
   
-  const categoryName = categoryInput ? (categoryInput.value.trim() || "Của tôi") : "Của tôi";
+  let categoryName = categoryInput ? (categoryInput.value.trim() || "Của tôi") : "Của tôi";
   
   const lines = text.split('\n');
   const newWords = [];
   let errorCount = 0;
   
-  lines.forEach((line, index) => {
+  let firstLineChecked = false;
+  const linesToParse = [];
+  
+  for (let line of lines) {
     const trimmed = line.trim();
-    if (!trimmed) return; // skip empty lines
+    if (!trimmed) continue;
     
+    if (!firstLineChecked) {
+      firstLineChecked = true;
+      const hasSeparator = trimmed.includes(':') || trimmed.includes('：') || 
+                            trimmed.includes('(') || trimmed.includes('（');
+      if (!hasSeparator) {
+        categoryName = trimmed;
+        continue;
+      }
+    }
+    linesToParse.push(trimmed);
+  }
+  
+  linesToParse.forEach((trimmed, index) => {
     let japanese = '';
     let vietnamese = '';
     
