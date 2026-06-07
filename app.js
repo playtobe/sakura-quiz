@@ -26,7 +26,7 @@ let appState = {
     masteredWords: [], // List of word IDs marked as mastered
     totalCorrectAnswers: 0,
     totalQuestionsAnswered: 0,
-    points: 100, // Initial point balance
+    points: 0, // Initial point balance
     inventory: {
       bubble_tea: 0,
       rice_paper: 0,
@@ -93,7 +93,7 @@ function initStats() {
     try {
       appState.stats = JSON.parse(storedStats);
       // Safeguard for new fields
-      if (appState.stats.points === undefined) appState.stats.points = 100;
+      if (appState.stats.points === undefined) appState.stats.points = 0;
       if (appState.stats.freeGames === undefined) appState.stats.freeGames = 0;
       if (!appState.stats.inventory) {
         appState.stats.inventory = {
@@ -1171,11 +1171,6 @@ function handleImportVocab() {
   const updatedCustom = [...existingCustom, ...newWords];
   localStorage.setItem('sakura_quiz_custom_vocab', JSON.stringify(updatedCustom));
   
-  // Award points: +2 points per word
-  appState.stats.points += (newWords.length * 2);
-  saveStats();
-  updateStatsUI();
-  
   // Reset textarea & category input
   textarea.value = '';
   if (categoryInput) categoryInput.value = '';
@@ -1480,11 +1475,6 @@ function saveVocab() {
       category: targetCategory
     };
     customVocab.push(newWord);
-    
-    // Award points
-    appState.stats.points += 2;
-    saveStats();
-    updateStatsUI();
   }
   
   localStorage.setItem('sakura_quiz_custom_vocab', JSON.stringify(customVocab));
