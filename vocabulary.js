@@ -165,6 +165,61 @@ const vocabularyData = [
     level: "N5",
     category: "Đồ vật"
   },
+  {
+    id: "n5_16",
+    kanji: "来る",
+    kana: "くる",
+    romaji: "kuru",
+    vietnamese: "Đến",
+    example: "あした、私のうちへ来てください。",
+    example_meaning: "Ngày mai hãy đến nhà tôi nhé.",
+    level: "N5",
+    category: "Hành động"
+  },
+  {
+    id: "n5_17",
+    kanji: "勉強",
+    kana: "べんきょう",
+    romaji: "benkyou",
+    vietnamese: "Học hành, Học tập",
+    example: "毎日、日本語を３時間勉強します。",
+    example_meaning: "Mỗi ngày tôi học tiếng Nhật 3 tiếng.",
+    level: "N5",
+    category: "Hành động"
+  },
+  {
+    id: "n5_18",
+    kanji: "手紙",
+    kana: "てがみ",
+    romaji: "tegami",
+    vietnamese: "Thư, Bức thư",
+    example: "家族に手紙を書きました。",
+    example_meaning: "Tôi đã viết thư cho gia đình.",
+    level: "N5",
+    category: "Đồ vật"
+  },
+  {
+    id: "n5_19",
+    kanji: "空港",
+    kana: "くうこう",
+    romaji: "kuukou",
+    vietnamese: "Sân bay",
+    example: "成田空港へ友達を迎えに行きます。",
+    example_meaning: "Tôi đi đón bạn ở sân bay Narita.",
+    level: "N5",
+    category: "Địa điểm"
+  },
+  {
+    id: "n5_20",
+    kanji: "暑い",
+    kana: "あつい",
+    romaji: "atsui",
+    vietnamese: "Nóng (thời tiết)",
+    example: "今日はとても暑いですね。",
+    example_meaning: "Hôm nay trời rất nóng nhỉ.",
+    level: "N5",
+    category: "Tính từ"
+  },
 
   // --- JLPT N4 ---
   {
@@ -277,6 +332,61 @@ const vocabularyData = [
     level: "N4",
     category: "Hành động"
   },
+  {
+    id: "n4_11",
+    kanji: "試合",
+    kana: "しあい",
+    romaji: "shiai",
+    vietnamese: "Trận đấu",
+    example: "明日のサッカーの試合を見に行きます。",
+    example_meaning: "Tôi sẽ đi xem trận đấu bóng đá ngày mai.",
+    level: "N4",
+    category: "Giải trí"
+  },
+  {
+    id: "n4_12",
+    kanji: "安全",
+    kana: "あんぜん",
+    romaji: "anzen",
+    vietnamese: "An toàn",
+    example: "この町は夜amp;でも安全です。",
+    example_meaning: "Thành phố này ban đêm cũng rất an toàn.",
+    level: "N4",
+    category: "Tính từ"
+  },
+  {
+    id: "n4_13",
+    kanji: "調べる",
+    kana: "しらべる",
+    romaji: "shiraberu",
+    vietnamese: "Điều tra, Tìm hiểu",
+    example: "辞書で言葉の意味を調べます。",
+    example_meaning: "Tôi tìm ý nghĩa của từ vựng bằng từ điển.",
+    level: "N4",
+    category: "Hành động"
+  },
+  {
+    id: "n4_14",
+    kanji: "連絡",
+    kana: "れんらく",
+    romaji: "renraku",
+    vietnamese: "Liên lạc",
+    example: "遅れるときは電話で連絡してください。",
+    example_meaning: "Khi bị trễ hãy liên lạc bằng điện thoại nhé.",
+    level: "N4",
+    category: "Hành động"
+  },
+  {
+    id: "n4_15",
+    kanji: "危険",
+    kana: "kiken",
+    romaji: "kiken",
+    vietnamese: "Nguy hiểm",
+    example: "あそこは車が多くて危険です。",
+    example_meaning: "Chỗ kia nhiều xe cộ nên rất nguy hiểm.",
+    level: "N4",
+    category: "Tính từ"
+  },
 
   // --- JLPT N3 ---
   {
@@ -388,6 +498,61 @@ const vocabularyData = [
     example_meaning: "Tôi rất hài lòng với kết quả lần này.",
     level: "N3",
     category: "Cảm xúc"
+  },
+  {
+    id: "n3_11",
+    kanji: "開発",
+    kana: "かいはつ",
+    romaji: "kaihatsu",
+    vietnamese: "Phát triển (phần mềm/sản phẩm)",
+    example: "新しいソフトウェアを開発しています。",
+    example_meaning: "Chúng tôi đang phát triển một phần mềm mới.",
+    level: "N3",
+    category: "Công việc"
+  },
+  {
+    id: "n3_12",
+    kanji: "調査",
+    kana: "ちょうさ",
+    romaji: "chousa",
+    vietnamese: "Điều tra, Khảo sát",
+    example: "市場調査の結果を報告します。",
+    example_meaning: "Tôi báo cáo kết quả khảo sát thị trường.",
+    level: "N3",
+    category: "Công việc"
+  },
+  {
+    id: "n3_13",
+    kanji: "影響",
+    kana: "えいきょう",
+    romaji: "eikyou",
+    vietnamese: "Ảnh hưởng",
+    example: "天候は農作物の収穫に影響します。",
+    example_meaning: "Thời tiết ảnh hưởng đến thu hoạch nông sản.",
+    level: "N3",
+    category: "Chung"
+  },
+  {
+    id: "n3_14",
+    kanji: "集中",
+    kana: "しゅうちゅう",
+    romaji: "shuuchuu",
+    vietnamese: "Tập trung",
+    example: "勉強に集中することができません。",
+    example_meaning: "Tôi không thể tập trung vào việc học.",
+    level: "N3",
+    category: "Chung"
+  },
+  {
+    id: "n3_15",
+    kanji: "回復",
+    kana: "かいふく",
+    romaji: "kaifuku",
+    vietnamese: "Hồi phục",
+    example: "病気から早く回復することを祈ります。",
+    example_meaning: "Tôi cầu mong bạn nhanh chóng hồi phục khỏi bệnh.",
+    level: "N3",
+    category: "Chung"
   }
 ];
 
